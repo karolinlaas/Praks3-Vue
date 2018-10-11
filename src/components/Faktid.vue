@@ -3,7 +3,10 @@
     <h1>Faktid numbrite kohta</h1>
     <p>Huvitavad faktid iga numbri kohta</p>
     <input type="number" v-model="number">
-    <p v-cloak>{{ data }}</p>
+    <input type="number" v-model="increment" min='0'>
+    <ul v-cloak v-for="">
+      <li v-for="(item, index) in data" v-bind:key="index">{{ item }}</li>
+    </ul>
   </div>
 </template>
 
@@ -14,14 +17,24 @@ export default {
   name: 'Faktid',
   data () {
     return {
-      data: '',
-      number: 0
+      data: {},
+      number: 0,
+      increment: 0,
+      items: []
     }
   },
   watch: {
     number() {
-      if (this.number !== '') {
-        let url = `http://numbersapi.com/${this.number}`
+      this.getFacts()
+    },
+    increment() {
+      this.getFacts()
+    }
+  },
+  methods: {
+    getFacts () {
+      if (this.number !== '' && this.inc !== '') {
+        let url = `http://numbersapi.com/${this.number}..${parseInt(this.increment) + parseInt(this.number)}`
 
         axios.get(url)
           .then(response => {
@@ -44,5 +57,10 @@ export default {
   }
   [v-cloak] {
     display: none;
+  }
+  input {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
   }
 </style>
